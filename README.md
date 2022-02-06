@@ -1,5 +1,8 @@
 # PADISI USC Dataset
-This repository analyzes the PADISI-Finger dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"><img align="right" src="https://i0.wp.com/vimal.isi.edu/wp-content/uploads/2022/01/VIMAL_Logo.png?w=1421&ssl=1" width="300"> [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://arxiv.org/abs/2006.07498) and 
+<img align="left" src="https://i0.wp.com/vimal.isi.edu/wp-content/uploads/2022/01/VIMAL_Logo.png?w=1421&ssl=1" width="500" alt="VIMAL">
+<img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="500" alt="USC ISI">
+
+This repository analyzes the PADISI-Finger dataset introduced in [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://arxiv.org/abs/2006.07498) and 
 the PADISI-Face dataset introduced in [Detection and Continual Learning of Novel Face Presentation Attacks](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html).
 Additionally, it provides sentence descriptions for all available samples of the PADISI-Face dataset, as introduced in [Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language](https://arxiv.org/abs/2111.04862)
 
