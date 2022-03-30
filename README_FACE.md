@@ -47,7 +47,7 @@ All text descriptions used in the experiments presented in [Explaining  Face  Pr
 Both the recipient (must be a project's principal investigator) and an official authorized signatory of the recipient’s organization must sign the agreement.
 For example, at a university, an authorized signatory is typically an administrative official, rather than a student or faculty member.
 2. Submit the request and upload your **signed** Data Transfer and Use Agreement at [PADISI-USC Face Dataset Request](https://docs.google.com/forms/d/e/1FAIpQLScZSems8SsIzcJS6zGqeNn4khiLRYNeIza_HNO2odKyeMmmNA/viewform?usp=sf_link).
-3. You will receive the download username/password and instructions upon approval and you can download the dataset within 30 days from approval.
+3. You will receive the download link and instructions upon approval and you can download the dataset within 30 days from approval.
 
 If you have any questions about the data request process you can send an email to:
 
