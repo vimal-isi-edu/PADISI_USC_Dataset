@@ -1,5 +1,5 @@
 # PADISI-Finger Dataset
-This document analyzes the PADISI-Finger dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"> [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://arxiv.org/abs/2006.07498) and provides  
+This document analyzes the PADISI-Finger dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"> [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://ieeexplore.ieee.org/document/9399674) and provides  
 instructions on how to [download](#downloading-the-dataset) and [use](#using-the-dataset-no-custom-package-installation-required) the dataset.
 The provided dataset is only the *PADISI-USC* portion of the dataset. We are not authorized to release the
 *PADISI-APL* portion of the dataset, as mentioned in the manuscript.
@@ -54,7 +54,7 @@ using `[PADISI USC Finger]: Dataset request question` on the subject line.
 
 ## Using the dataset (No custom package installation required)
 For ease of use, we are providing a preprocessed version of our *PADISI-USC* dataset
-(used in the experiments presented in [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://arxiv.org/abs/2006.07498)). When you download the preprocessed data, you will receive a
+(used in the experiments presented in [Multi-Modal Fingerprint Presentation Attack Detection: Evaluation On A New Dataset](https://ieeexplore.ieee.org/document/9399674)). When you download the preprocessed data, you will receive a
 file ```padisi_USC_FINGER_preprocessed.bz2``` which can be loaded in Python using the joblib package
 (see [conda installation](https://anaconda.org/anaconda/joblib) or
 [pip installation](https://joblib.readthedocs.io/en/latest/installing.html)) as:

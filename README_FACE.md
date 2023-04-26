@@ -1,7 +1,7 @@
 # PADISI-Face USC Dataset
 This document analyzes the PADISI-Face dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"> ["Detection and Continual Learning of Novel Face Presentation Attacks"](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and provides  
 instructions on how to [download](#downloading-the-dataset) and [use](#using-the-dataset-no-custom-package-installation-required) the dataset. 2 versions of the dataset are available (`COLOR` and `MULTI-SPECTRAL` - see ["Multispectral Biometrics System Framework: Application to Presentation Attack Detection"](https://ieeexplore.ieee.org/document/9409166)). Additionally, it provides sentence descriptions for all available samples as introduced
-in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://arxiv.org/abs/2111.04862).  
+in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://doi.ieeecomputersociety.org/10.1109/FG52635.2021.9667024).  
 
 ## Dataset organization
 
@@ -35,7 +35,7 @@ Each `.csv` file contains the following columns:
 <img src="https://github.com/vimal-isi-edu/PADISI_USC_Dataset/blob/main/images/PADISI_Face_statistics_demographics.png" width="700"/>
 
 ### <ins>Text descriptions per sample<ins>
-All text descriptions used in the experiments presented in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://arxiv.org/abs/2111.04862) can be found under
+All text descriptions used in the experiments presented in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://doi.ieeecomputersociety.org/10.1109/FG52635.2021.9667024) can be found under
 [data/face_partitions/padisi_USC_FACE_descriptions.csv](./data/face_partitions/padisi_USC_FACE_descriptions.csv). The provided `.csv` file contains the following columns:
 * `transaction_id`, `trial_id`, `trial_name`: Same as in the ground truth, [above](#insground-truth-fileins). Can be used to uniquely associate each row of the descriptions `.csv` file to a row in the ground truth `.csv` file.
 * `des0`, `des1`, `des2`, `des3`, `des4`: 5 freeform text descriptions for each sample.
@@ -202,7 +202,7 @@ If you further use the [text descriptions](#instext-descriptions-per-sampleins),
     [Leonidas Spinoulas](https://scholar.google.com/citations?user=SAw0POgAAAAJ&hl=en),
     [Jonathan May](https://scholar.google.com/citations?user=tmK5EPEAAAAJ&hl=en),
     and [Wael AbdAlmageed](https://scholar.google.com/citations?hl=en&user=tRGH8FkAAAAJ),
-    ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://arxiv.org/abs/2111.04862), in <em>IEEE International Conference on Automatic Face and Gesture Recognition</em>, 2021
+    ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://doi.ieeecomputersociety.org/10.1109/FG52635.2021.9667024), in <em>IEEE International Conference on Automatic Face and Gesture Recognition</em>, 2021
 
 
 ```
@@ -235,17 +235,17 @@ Bibtex format
   doi       = {10.1109/JSEN.2021.3074406}
 }
 
-@misc{mirzaalian2021explaining,
-      title={Explaining Face Presentation Attack Detection Using Natural Language},
-      author={Hengameh Mirzaalian and
-              Mohamed E. Hussein and
-              Leonidas Spinoulas and
-              Jonathan May and
-              Wael Abd-Almageed},
-      year={2021},
-      eprint={2111.04862},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@INPROCEEDINGS{mirzaalian2021explaining,
+    author = {H. Mirzaalian and M. E. Hussein and L. Spinoulas and J. May and W. Abd-Almageed},
+    booktitle = {2021 16th IEEE International Conference on Automatic Face and Gesture Recognition (FG 2021)},
+    title = {Explaining Face Presentation Attack Detection Using Natural Language},
+    year = {2021},
+    pages = {1-8},
+    doi = {10.1109/FG52635.2021.9667024},
+    url = {https://doi.ieeecomputersociety.org/10.1109/FG52635.2021.9667024},
+    publisher = {IEEE Computer Society},
+    address = {Los Alamitos, CA, USA},
+    month = {dec}
 }
 
 ```
