@@ -7,27 +7,49 @@ from padisi_modules.dataIO.padisi_dataset import PadisiH5Reader, PadisiH5ReaderD
 
 class FacePadisiPreprocessedDataExtractor(PadisiH5ReaderDataExtractor):
     NEEDED_DICT_KEYS = ('data', 'identifiers')
-    EXTRACTOR_NAME_FIXED_ORDER = ('COLOR',)
-    EXTRACTOR_CHANNEL_MAPPING = {'COLOR': tuple(range(3))}
+    EXTRACTOR_NAME_FIXED_ORDER = ('COLOR', 'NIR', 'DEPTH', 'THERMAL', 'NIRL', 'NIRR', 'SWIR')
+    EXTRACTOR_CHANNEL_MAPPING = {'COLOR': tuple(range(3)),
+                                 'NIR': (3,),
+                                 'DEPTH': (4,),
+                                 'THERMAL': (5,),
+                                 'NIRL': tuple(range(6, 11)),
+                                 'NIRR': tuple(range(11, 16)),
+                                 'SWIR': tuple(range(16, 22))}
 
     def __init__(self, data_identifiers: (tuple, list), preprocessed_data_dict: dict):
         super(FacePadisiPreprocessedDataExtractor, self).__init__()
+        self._multi_spectral_data = False
         self.preprocessed_data_dict = preprocessed_data_dict
         self.data_identifiers = data_identifiers
         self._data_channels = sorted([item for sublist in
                                       [FacePadisiPreprocessedDataExtractor.EXTRACTOR_CHANNEL_MAPPING[key]
                                        for key in self.data_identifiers] for item in sublist])
         # Pre-calculate indices per identifier for speed
-        self._identifier_idx = dict(zip(self.preprocessed_data_dict['identifiers'],
-                                        range(len(self.preprocessed_data_dict['identifiers']))))
+        if not self._multi_spectral_data:
+            invalid_identifiers = [item for item in self.data_identifiers if item not in ('COLOR',)]
+            assert len(invalid_identifiers) == 0, \
+                "{} Error: Only the 'COLOR' identifier is supported for pre-processed RGB data. Use the multi-channel" \
+                "pre-processed data instead for using additional channels.".format(self.__class__.__name__)
+            self._identifier_idx = dict(zip(self.preprocessed_data_dict['identifiers'],
+                                            range(len(self.preprocessed_data_dict['identifiers']))))
 
     def _extract_padisi_h5_data(self, padisi_h5_reader: PadisiH5Reader) -> np.ndarray:
         reader_identifier = padisi_h5_reader.get_reader_identifier()
-        assert reader_identifier in self._identifier_idx, \
-            "{} Error: Identifier '{}' does not exist in " \
-            "dataset.".format(self.__class__.__name__ + "._extract_padisi_h5_data()", reader_identifier)
+        try:
+            if self._multi_spectral_data:
+                assert reader_identifier in self.preprocessed_data_dict
+            else:
+                assert reader_identifier in self._identifier_idx
+        except AssertionError:
+            raise AssertionError("{} Error: Identifier '{}' does not exist in "
+                                 "dataset.".format(self.__class__.__name__ + "._extract_padisi_h5_data()",
+                                                   reader_identifier))
 
-        data = self.preprocessed_data_dict['data'][self._identifier_idx[reader_identifier], self._data_channels, :, :]
+        if self._multi_spectral_data:
+            data = np.load(self.preprocessed_data_dict[reader_identifier])['data'][:, self._data_channels, :, :]
+        else:
+            data = self.preprocessed_data_dict['data'][
+                   self._identifier_idx[reader_identifier], self._data_channels, :, :]
         if data.ndim < 4:
             data = np.expand_dims(data, axis=0)
 
@@ -64,22 +86,29 @@ class FacePadisiPreprocessedDataExtractor(PadisiH5ReaderDataExtractor):
             "dictionary.".format(self.__class__.__name__)
         missing_keys = [item for item in FacePadisiPreprocessedDataExtractor.NEEDED_DICT_KEYS
                         if item not in preprocessed_data_dict]
-        assert len(missing_keys) == 0, \
-            "{} Error: Dictionary 'preprocessed_data_dict' is missing keys: " \
-            "[{}].".format(self.__class__.__name__, ', '.join(["'" + item + "'" for item in missing_keys]))
+        if len(missing_keys) == len(FacePadisiPreprocessedDataExtractor.NEEDED_DICT_KEYS):
+            self._multi_spectral_data = True
+            pass
+        else:
+            assert len(missing_keys) == 0, \
+                "{} Error: Dictionary 'preprocessed_data_dict' is missing keys: " \
+                "[{}].".format(self.__class__.__name__, ', '.join(["'" + item + "'" for item in missing_keys]))
 
-        assert isinstance(preprocessed_data_dict['data'], np.ndarray) and preprocessed_data_dict['data'].ndim == 4, \
-            "{} Error: Entry 'preprocessed_data_dict['data']' must be a 4-dimensional numpy " \
-            "array.".format(self.__class__.__name__)
+            assert (isinstance(preprocessed_data_dict['data'], np.ndarray)
+                    and preprocessed_data_dict['data'].ndim == 4), \
+                "{} Error: Entry 'preprocessed_data_dict['data']' must be a 4-dimensional numpy " \
+                "array.".format(self.__class__.__name__)
 
-        assert isinstance(preprocessed_data_dict['identifiers'], list) and len(
-            preprocessed_data_dict['identifiers']) and all(
-            list(map(lambda item: isinstance(item, str) and len(item) > 0, preprocessed_data_dict['identifiers']))), \
-            "{} Error: Entry 'preprocessed_data_dict['identifiers']' must be a non-empty list of " \
-            "non-empty strings.".format(self.__class__.__name__)
+            assert isinstance(preprocessed_data_dict['identifiers'], list) and len(
+                preprocessed_data_dict['identifiers']) and all(
+                list(map(lambda item: isinstance(item, str) and len(item) > 0,
+                         preprocessed_data_dict['identifiers']))), \
+                "{} Error: Entry 'preprocessed_data_dict['identifiers']' must be a non-empty list of " \
+                "non-empty strings.".format(self.__class__.__name__)
 
-        assert len(preprocessed_data_dict['identifiers']) == preprocessed_data_dict['data'].shape[0], \
-            "{} Error: The number of elements of entry 'preprocessed_data_dict['identifiers']' and the fist " \
-            "dimension of the numpy array 'preprocessed_data_dict['data']' must match".format(self.__class__.__name__)
+            assert len(preprocessed_data_dict['identifiers']) == preprocessed_data_dict['data'].shape[0], \
+                "{} Error: The number of elements of entry 'preprocessed_data_dict['identifiers']' and the fist " \
+                "dimension of the numpy array 'preprocessed_data_dict['data']' " \
+                "must match".format(self.__class__.__name__)
 
         self._preprocessed_data_dict = preprocessed_data_dict

@@ -1,7 +1,7 @@
 # PADISI-Face USC Dataset
-This document analyzes the PADISI-Face dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"> [Detection and Continual Learning of Novel Face Presentation Attacks](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and provides  
-instructions on how to [download](#downloading-the-dataset) and [use](#using-the-dataset-no-custom-package-installation-required) the dataset. Additionally, it provides sentence descriptions for all available samples as introduced
-in [Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language](https://arxiv.org/abs/2111.04862).  
+This document analyzes the PADISI-Face dataset introduced in <img align="right" src="https://www.isi.edu/images/isi-logo.jpg" width="300"> ["Detection and Continual Learning of Novel Face Presentation Attacks"](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and provides  
+instructions on how to [download](#downloading-the-dataset) and [use](#using-the-dataset-no-custom-package-installation-required) the dataset. 2 versions of the dataset are available (`COLOR` and `MULTI-SPECTRAL` - see ["Multispectral Biometrics System Framework: Application to Presentation Attack Detection"](https://ieeexplore.ieee.org/document/9409166)). Additionally, it provides sentence descriptions for all available samples as introduced
+in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://arxiv.org/abs/2111.04862).  
 
 ## Dataset organization
 
@@ -35,7 +35,7 @@ Each `.csv` file contains the following columns:
 <img src="https://github.com/vimal-isi-edu/PADISI_USC_Dataset/blob/main/images/PADISI_Face_statistics_demographics.png" width="700"/>
 
 ### <ins>Text descriptions per sample<ins>
-All text descriptions used in the experiments presented in [Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language](https://arxiv.org/abs/2111.04862) can be found under
+All text descriptions used in the experiments presented in ["Explaining  Face  Presentation  Attack  Detection  Using  Natural  Language"](https://arxiv.org/abs/2111.04862) can be found under
 [data/face_partitions/padisi_USC_FACE_descriptions.csv](./data/face_partitions/padisi_USC_FACE_descriptions.csv). The provided `.csv` file contains the following columns:
 * `transaction_id`, `trial_id`, `trial_name`: Same as in the ground truth, [above](#insground-truth-fileins). Can be used to uniquely associate each row of the descriptions `.csv` file to a row in the ground truth `.csv` file.
 * `des0`, `des1`, `des2`, `des3`, `des4`: 5 freeform text descriptions for each sample.
@@ -57,8 +57,11 @@ using `[PADISI USC Face]: Dataset request question` on the subject line.
 
 
 ## Using the dataset (No custom package installation required)
-For ease of use, we are providing a preprocessed version of our *PADISI-Face* dataset
-(used in the experiments presented in [Detection and Continual Learning of Novel Face Presentation Attacks]). When you download the preprocessed data, you will receive a
+For ease of use, we are providing two preprocessed versions of our *PADISI-Face* dataset
+(one with `COLOR` data only used in the experiments presented in ["Detection and Continual Learning of Novel Face Presentation Attacks"](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and one with all additional captured multi-spectral channels as described in ["Multispectral Biometrics System Framework: Application to Presentation Attack Detection"](https://ieeexplore.ieee.org/document/9409166). 
+
+### - COLOR data only
+When you download the `COLOR` preprocessed data, you will receive a
 file ```padisi_USC_FACE_preprocessed.bz2``` which can be loaded in Python using the joblib package
 (see [conda installation](https://anaconda.org/anaconda/joblib) or
 [pip installation](https://joblib.readthedocs.io/en/latest/installing.html)) as:
@@ -71,7 +74,7 @@ data_dict = joblib.load("padisi_USC_FACE_preprocessed.bz2")
 The above command will load a python dictionary with the following entries:
 
 ```
-"data"       : 4d numpy array of shape (2029, 3, 160, 80)  
+"data"       : 4d numpy array of shape (2029, 3, 320, 256)  
                - 2029: total number of samples
                -    3: total number of image channels per sample - each channel is normalized in 0-1 based on camera's bit depth
                -  320: image height
@@ -86,10 +89,37 @@ The above command will load a python dictionary with the following entries:
 * `"labels"`: `False`: Bona-fide, `True`: Presentation attack.
 * `"pai_codes"`: Ground truth code, using the rules discussed [above](#insground-truth-fileins).
 
+### - MULTI-SPECTRAL data
+
+When you download the `MULTI-SPECTRAL` preprocessed data, you will receive a `.zip` file `padisi_USC_FACE_MULTI_SPECTRAL_preprocessed.zip`, which when unzipped, it will contain a folder with `2029 .npz` files, each one containing a numpy array of all multi-spectral channels per sample. Each numpy array can be loaded as:
+
+```
+import numpy as np
+data = np.load('<file_name>.npz')['data'] 
+```
+
+The naming of each file follows the `"identifiers"` convention, discussed above as `"ID_<transaction_id>_<trial_id>_<trial_name>.npz"`
+* Each file contains a 4d numpy array of shape `(1, 22, 320, 256)`:
+  ```
+  -   1: number of frames
+  -  22: total number of image channels - each channel is normalized in 0-1 based on camera's bit depth (see paper for details).
+  - 320: image height
+  - 256: image width
+  ```
+* The channels in each sample are organized as follows:
+  * `COLOR`: Channels `0-2` (3 images in `BGR` order).
+  * `NIR`  : Channel  `3` (1 image of the NIR channel of the RealSense camera).
+  * `DEPTH`: Channel  `4` (1 image of the depth channel of the RealSense camera).
+  * `THERMAL`: Channel `5` (1 image of the thermal camera).
+  * `NIRL` : Channels `6-10` (5 images of the NIR LEFT camera with wavelength order `[660nm, 780nm, 870nm, 940nm, 1050nm]`)
+  * `NIRR` : Channels `11-15`(5 images of the NIR RIGHT camera with wavelength order `[660nm, 780nm, 870nm, 940nm, 1050nm]`).
+  * `SWIR` : Channels `16-21` (6 images of the SWIR camera with wavelength order `[940nm, 1050nm, 1200nm, 1450nm, 1550nm, 1650nm]`)
+ 
+  
 ## Example data loading (Requires installing custom packages)
 
 We are providing a simple [example](./scripts/face_scripts/face_data_example.py) for looping through the
-preprocessed data using custom packages. The example also shows the creation of a [PyTorch DataLoader](https://pytorch.org/docs/stable/data.html).
+preprocessed data using custom packages (supported both the `COLOR` only and `MULTI-CHANNEL` data. The example also shows the creation of a [PyTorch DataLoader](https://pytorch.org/docs/stable/data.html).
 This requires creating an environment using [conda](https://docs.conda.io/en/latest/) and installing the provided package.
 The example code also works without PyTorch (if not installed).
 
@@ -111,10 +141,17 @@ The example code also works without PyTorch (if not installed).
             ```
    * **Running the example** (see [script](./scripts/face_scripts/face_data_example.py) for flag explanation and additional available flags):
 
-        ```
-        conda activate padisi
-        python face_data_example.py -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv -extractor_id COLOR
-        ```
+     * For pre-processed color data only (only COLOR is supported for the `extractor_id` argument):
+       ```
+       conda activate padisi
+       python face_data_example.py -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv -extractor_id COLOR
+       ```
+     * For pre-processed multi-channel data (any combination of COLOR, NIR, DEPTH, THERMAL, NIRL, NIRR, and SWIR, separated by underscores, is supported for the `extractor_id` argument). Regardless of the order of the provided `extractor_id` strings, channels will always be returned in the aforementioned order. For example `extractor_id COLOR_SWIR` and `extractor_id SWIR_COLOR` will always return channels `0-2, 16-21` in sorted order: 
+       ```
+       conda activate padisi
+       python face_data_example.py -data_path ../../data/face_data/preprocessed/multi_channel -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv -extractor_id COLOR
+       ```
+
 
 ## Licence
 The dataset and code is made available for academic or non-commercial purposes only.

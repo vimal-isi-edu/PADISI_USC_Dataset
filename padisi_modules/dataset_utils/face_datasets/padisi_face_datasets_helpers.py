@@ -1,31 +1,31 @@
+import inspect
+
 from padisi_modules.dataIO.dataset import ReaderDataExtractor
 from padisi_modules.dataIO.padisi_dataset import PadisiH5Dataset
-
 from padisi_modules.dataset_utils.face_datasets.padisi_face_datasets_utils import FacePadisiPreprocessedDataExtractor
-
-VALID_PARTS = ('COLOR',)
 
 
 def create_padisi_face_data_extractor(extractor_id: str,
                                       preprocessed_data_dict: (dict, None) = None) -> ReaderDataExtractor:
-
-    error_str = 'create_padisi_face_data_extractor()'
+    error_str = inspect.currentframe().f_code.co_name + '()'
     assert preprocessed_data_dict is not None, \
         "{} Error: Using non-preprocessed data is currently not supported.".format(error_str)
 
     extractor_id_parts = extractor_id.split('_')
     assert len(set(extractor_id_parts)) == len(extractor_id_parts), \
-        "{} Error: Variable 'extractor_id' must contain unique parts.".format('create_padisi_finger_data_extractor()')
+        "{} Error: Variable 'extractor_id' must contain unique parts.".format(error_str)
 
-    assert all(list(map(lambda item: item in VALID_PARTS, extractor_id_parts))), \
+    assert all(list(map(lambda item: item in FacePadisiPreprocessedDataExtractor.EXTRACTOR_NAME_FIXED_ORDER,
+                        extractor_id_parts))), \
         "{} Error: Variable 'extractor_id' must contain strings [{}], separated by " \
-        "underscores.".format('create_padisi_finger_data_extractor()',
-                              ', '.join(["'" + item + "'" for item in VALID_PARTS]))
+        "underscores.".format(error_str,
+                              ', '.join(["'" + item + "'"
+                                         for item in FacePadisiPreprocessedDataExtractor.EXTRACTOR_NAME_FIXED_ORDER]))
 
     if preprocessed_data_dict is not None:
         assert isinstance(preprocessed_data_dict, dict) and len(preprocessed_data_dict) > 0, \
             "{} Error: If variable 'preprocessed_data_dict' is not None, it must be non-empty " \
-            "dictionary.".format('create_padisi_finger_data_extractor()')
+            "dictionary.".format(error_str)
         return FacePadisiPreprocessedDataExtractor(extractor_id_parts, preprocessed_data_dict)
 
 
@@ -52,8 +52,9 @@ def create_padisi_face_dataset(extractor_id: str, db_path: (None, str), gt_path:
     :return                      : Dataset object configured with the proper extractor
     """
 
+    error_str = inspect.currentframe().f_code.co_name + '()'
     assert isinstance(extractor_id, str) and len(extractor_id) > 0, \
-        "{} Error: Variable 'extractor_id' must be a non-empty string.".format('create_padisi_finger_dataset()')
+        "{} Error: Variable 'extractor_id' must be a non-empty string.".format(error_str)
 
     extractor = create_padisi_face_data_extractor(extractor_id, preprocessed_data_dict)
     dataset = PadisiH5Dataset(db_path=db_path, ground_truth_path=gt_path, dataset_partition_path=part_path,

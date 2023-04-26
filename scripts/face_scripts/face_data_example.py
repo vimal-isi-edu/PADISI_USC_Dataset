@@ -10,20 +10,38 @@ except ModuleNotFoundError:
     torch = None
 
 
-# Example use:
+# Example use when using pre-processed COLOR data:
 #   The code assumes that:
 #   -- The pre-processed data have been downloaded and are under data/face_data/preprocessed/
-#      padisi_USC_FACE_preprocessed.bz2 - Provide a different path otherwise through the (-data_file) flag.
+#      padisi_USC_FACE_preprocessed.bz2 - Provide a different path otherwise through the (-data_path) flag.
 #   -- We select the 3fold_part0 partition (see all partitions under data/face_partitions)
-#   -- We select COLOR data.
+#   -- We select COLOR data - This is the only option for these data.
 #
 #   conda activate padisi
 #   python face_data_example.py
 #          -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv
 #          -extractor_id COLOR
+
+# Example use when using pre-processed multi-channel data:
+#   The code assumes that:
+#   -- The pre-processed multi-channel data have been downloaded, unzipped and are under the
+#      data/face_data/preprocessed/multi_channel folder
+#      - Provide a different path otherwise through the (-data_path) flag.
+#   -- We select the 3fold_part0 partition (see all partitions under data/face_partitions)
+#   -- We select COLOR data - The user can select any combination of COLOR, NIR, DEPTH, THERMAL, NIRL, NIRR, SWIR,
+#      separated by underscores. Regardless of the order provided, the data will always be returned in the
+#      aforementioned order.  For example -extractor_id COLOR_SWIR and -extractor_id SWIR_COLOR will always
+#      return channels 0-2, 16-21 in sorted order:
+#
+#   conda activate padisi
+#   python face_data_example.py
+#          -data_path ../../data/face_data/preprocessed/multi_channel
+#          -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv
+#          -extractor_id COLOR
+
 def main():
     parser = argparse.ArgumentParser(description='Arguments for testing the creation of a PyTorch loader.')
-    parser.add_argument('-data_file', dest='data_file', type=str,
+    parser.add_argument('-data_path', dest='data_path', type=str,
                         default=os.path.join('..', '..', 'data', 'face_data', 'preprocessed',
                                              'padisi_USC_FACE_preprocessed.bz2'),
                         help='Path to the .bz2 file containing the pre-processed data.')
@@ -43,7 +61,7 @@ def main():
     args = parser.parse_args()
 
     # Load pre-processed data
-    data_dict = load_preprocessed_data(args.data_file)
+    data_dict = load_preprocessed_data(args.data_path)
 
     # Create dataset based on provided extractor_id and provided partition
     dataset = create_padisi_face_dataset(extractor_id=args.extractor_id,
