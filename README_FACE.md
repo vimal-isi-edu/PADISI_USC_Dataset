@@ -45,7 +45,7 @@ All text descriptions used in the experiments presented in ["Explaining  Face  P
 
 1. Please download and sign the provided [Data Transfer and Use Agreement](./documents/PADISI_USC_Face_Data_Sharing_Agreement.pdf).
 Both the recipient (must be a project's principal investigator) and an official authorized signatory of the recipient’s organization must sign the agreement.
-For example, at a university, an authorized signatory is typically an administrative official, rather than a student or faculty member.
+For example, at a university, an authorized signatory is typically an administrative official, rather than a student or faculty member. [PLEASE, CAREFULLY READ THIS PAGE](./README_COMMON.md).
 2. Submit the request and upload your **signed** Data Transfer and Use Agreement at [PADISI-USC Face Dataset Request](https://docs.google.com/forms/d/e/1FAIpQLScZSems8SsIzcJS6zGqeNn4khiLRYNeIza_HNO2odKyeMmmNA/viewform?usp=sf_link).
 3. You will receive the download link and instructions upon approval and you can download the dataset within 30 days from approval.
 
@@ -58,7 +58,7 @@ using `[PADISI USC Face]: Dataset request question` on the subject line.
 
 ## Using the dataset (No custom package installation required)
 For ease of use, we are providing two preprocessed versions of our *PADISI-Face* dataset
-(one with `COLOR` data only used in the experiments presented in ["Detection and Continual Learning of Novel Face Presentation Attacks"](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and one with all additional captured multi-spectral channels as described in ["Multispectral Biometrics System Framework: Application to Presentation Attack Detection"](https://ieeexplore.ieee.org/document/9409166). 
+(one with `COLOR` data only used in the experiments presented in ["Detection and Continual Learning of Novel Face Presentation Attacks"](https://openaccess.thecvf.com/content/ICCV2021/html/Rostami_Detection_and_Continual_Learning_of_Novel_Face_Presentation_Attacks_ICCV_2021_paper.html) and one with all additional captured multi-spectral channels as described in ["Multispectral Biometrics System Framework: Application to Presentation Attack Detection"](https://ieeexplore.ieee.org/document/9409166).
 
 ### - COLOR data only
 When you download the `COLOR` preprocessed data, you will receive a
@@ -95,7 +95,7 @@ When you download the `MULTI-SPECTRAL` preprocessed data, you will receive a `.z
 
 ```
 import numpy as np
-data = np.load('<file_name>.npz')['data'] 
+data = np.load('<file_name>.npz')['data']
 ```
 
 The naming of each file follows the `"identifiers"` convention, discussed above as `"ID_<transaction_id>_<trial_id>_<trial_name>.npz"`
@@ -114,8 +114,8 @@ The naming of each file follows the `"identifiers"` convention, discussed above 
   * `NIRL` : Channels `6-10` (5 images of the NIR LEFT camera with wavelength order `[660nm, 780nm, 870nm, 940nm, 1050nm]`)
   * `NIRR` : Channels `11-15`(5 images of the NIR RIGHT camera with wavelength order `[660nm, 780nm, 870nm, 940nm, 1050nm]`).
   * `SWIR` : Channels `16-21` (6 images of the SWIR camera with wavelength order `[940nm, 1050nm, 1200nm, 1450nm, 1550nm, 1650nm]`)
- 
-  
+
+
 ## Example data loading (Requires installing custom packages)
 
 We are providing a simple [example](./scripts/face_scripts/face_data_example.py) for looping through the
@@ -146,7 +146,7 @@ The example code also works without PyTorch (if not installed).
        conda activate padisi
        python face_data_example.py -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv -extractor_id COLOR
        ```
-     * For pre-processed multi-channel data (any combination of COLOR, NIR, DEPTH, THERMAL, NIRL, NIRR, and SWIR, separated by underscores, is supported for the `extractor_id` argument). Regardless of the order of the provided `extractor_id` strings, channels will always be returned in the aforementioned order. For example `extractor_id COLOR_SWIR` and `extractor_id SWIR_COLOR` will always return channels `0-2, 16-21` in sorted order: 
+     * For pre-processed multi-channel data (any combination of COLOR, NIR, DEPTH, THERMAL, NIRL, NIRR, and SWIR, separated by underscores, is supported for the `extractor_id` argument). Regardless of the order of the provided `extractor_id` strings, channels will always be returned in the aforementioned order. For example `extractor_id COLOR_SWIR` and `extractor_id SWIR_COLOR` will always return channels `0-2, 16-21` in sorted order:
        ```
        conda activate padisi
        python face_data_example.py -data_path ../../data/face_data/preprocessed/multi_channel -dbp ../../data/face_partitions/padisi_USC_FACE_dataset_partition_3folds_part0.csv -extractor_id COLOR

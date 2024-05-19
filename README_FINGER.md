@@ -41,13 +41,13 @@ Each `.csv` file contains the following columns:
 
 1. Please download and sign the provided [Data Transfer and Use Agreement](./documents/PADISI_USC_Finger_Data_Sharing_Agreement.pdf).
 Both the recipient (must be a project's principal investigator) and an official authorized signatory of the recipient’s organization must sign the agreement.
-For example, at a university, an authorized signatory is typically an administrative official, rather than a student or faculty member.
+For example, at a university, an authorized signatory is typically an administrative official, rather than a student or faculty member. [PLEASE, CAREFULLY READ THIS PAGE](./README_COMMON.md).
 2. Submit the request and upload your **signed** Data Transfer and Use Agreement at [PADISI-USC Finger Dataset Request](https://docs.google.com/forms/d/e/1FAIpQLSfPAX9JbmehkbD4ss3zVal5cgfH1osCNNTDegY8PZBrfdui9w/viewform?vc=0&c=0&w=1&flr=0).
 3. You will receive the download link and instructions upon approval and you can download the dataset within 30 days from approval.
 
 If you have any questions about the data request process you can send an email to:
 
-<img src="https://github.com/vimal-isi-edu/PADISI_USC_Dataset/blob/main/images/e-mail.png" width="100"/> 
+<img src="https://github.com/vimal-isi-edu/PADISI_USC_Dataset/blob/main/images/e-mail.png" width="100"/>
 
 using `[PADISI USC Finger]: Dataset request question` on the subject line.
 
